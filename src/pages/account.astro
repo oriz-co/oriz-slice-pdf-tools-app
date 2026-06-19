@@ -1,39 +1,38 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import { AccountPanel } from '@chirag127/oriz-ui'
 ---
 
 <BaseLayout
-	title="Account — PDF Tools"
-	description="Sign in to PDF Tools. One account works across every oriz site."
-	canonical="/account"
+  title="Account — PDF Tools"
+  description="Sign in to PDF Tools. One account works across every oriz site."
+  noindex={true}
+  hideSidebar={true}
 >
-	<section class="bg-gradient-to-br from-slate-50 to-blue-50/30 border-b border-gray-200/60">
-		<div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
-			<p class="text-sm text-gray-500 mb-2">
-				<a href="/" class="hover:text-gray-900">PDF Tools</a> / Account
-			</p>
-			<h1 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-2">
-				Account
-			</h1>
-			<p class="text-lg text-gray-600">
-				One sign-in works across every oriz site. Your preferences and history follow you.
-			</p>
-		</div>
-	</section>
+  <header class="page-head">
+    <p class="eyebrow"><a href="/">PDF Tools</a> / Account</p>
+    <h1>Account</h1>
+    <p class="lede">
+      One sign-in works across every oriz site. Bookmarks, reading history, and
+      preferences follow you.
+    </p>
+  </header>
 
-	<section class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
-		<div class="card p-8 text-center">
-			<p class="text-gray-700 mb-4">
-				Account sign-in for the oriz family is wired through
-				<a href="https://auth.oriz.in" class="text-blue-600 hover:underline">auth.oriz.in</a>.
-			</p>
-			<p class="text-sm text-gray-500">
-				The interactive sign-in panel will be mounted here once the
-				<code class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">@chirag127/oriz-ui</code>
-				package is installed.
-			</p>
-		</div>
-	</section>
-
-	<meta slot="head" name="robots" content="noindex,nofollow" />
+  <section class="panel">
+    <AccountPanel client:load />
+  </section>
 </BaseLayout>
+
+<style>
+  .page-head {
+    max-width: var(--container-prose, 720px);
+    margin-inline: auto;
+    padding-block: 3rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .eyebrow { color: var(--color-fg-muted); font-size: 0.8125rem; margin: 0 0 0.5rem; }
+  .eyebrow a { color: var(--color-fg-muted); text-decoration: none; }
+  h1 { font-family: var(--font-serif, Georgia, serif); font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 600; letter-spacing: -0.02em; margin: 0; }
+  .lede { color: var(--color-fg-muted); margin: 0.75rem 0 0; font-size: 1.0625rem; max-width: 56ch; }
+  .panel { max-width: var(--container-prose, 720px); margin-inline: auto; padding-block: 2rem 4rem; }
+</style>

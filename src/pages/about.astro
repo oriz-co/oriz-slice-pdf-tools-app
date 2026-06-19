@@ -1,55 +1,82 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import { FAMILY } from '@chirag127/oriz-ui'
+import { SITE_CONFIG } from '~/lib/siteConfig'
 ---
 
 <BaseLayout
-	title="About OrizPDF | Free, Private PDF Tools"
-	description="Learn about OrizPDF — a free, open-source, privacy-first PDF tools platform. All processing runs in your browser. No uploads. No tracking."
-	canonical="/about"
+  title={`About — ${SITE_CONFIG.name}`}
+  description={`About ${SITE_CONFIG.name}: free, private, browser-based PDF tools. Part of the ${FAMILY.brand} family by ${FAMILY.operator.name}.`}
+  hideSidebar={true}
 >
-	<section class="bg-gradient-to-br from-slate-50 to-blue-50/30 border-b border-gray-200/60">
-		<div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
-			<h1 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-2">About OrizPDF</h1>
-			<p class="text-lg text-gray-600">Free, private, open-source PDF tools for everyone.</p>
-		</div>
-	</section>
+  <header class="page-head">
+    <p class="eyebrow"><a href="/">PDF Tools</a> / About</p>
+    <h1>About PDF Tools</h1>
+  </header>
 
-	<article class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 prose prose-gray max-w-none">
-		<h2>Our Mission</h2>
-		<p>OrizPDF was created with a simple belief: <strong>essential PDF tools should be free, fast, and private.</strong> Too many PDF websites upload your files to unknown servers, bombard you with ads, or lock features behind paywalls. We decided to build something different.</p>
+  <article class="prose">
+    <p class="lede">
+      <strong>{SITE_CONFIG.name}</strong> is a free, browser-based PDF toolkit —
+      30+ tools to merge, split, compress, convert, edit, sign, and OCR PDFs.
+      Files never leave your device.
+    </p>
 
-		<h2>How It Works</h2>
-		<p>Every tool on OrizPDF runs entirely in your web browser using modern JavaScript libraries and WebAssembly. When you upload a PDF, it never leaves your device — all the processing happens locally. This means:</p>
-		<ul>
-			<li><strong>Complete privacy</strong> — we literally cannot see your files</li>
-			<li><strong>No waiting</strong> — no upload/download round-trip to a server</li>
-			<li><strong>No limits</strong> — process as many files as you want</li>
-			<li><strong>Works offline</strong> — once loaded, tools work without internet</li>
-		</ul>
+    <h2>How it works</h2>
+    <p>
+      Every tool runs entirely in your browser using <code>pdf-lib</code>,
+      <code>pdfjs-dist</code>, <code>tesseract.js</code>, and friends. There is
+      no upload, no server-side processing, no account required to use a tool.
+      The only Firebase Auth integration is optional and only stores cross-site
+      preferences — it never sees your PDFs.
+    </p>
 
-		<h2>Technology</h2>
-		<p>OrizPDF is built with modern web technologies:</p>
-		<ul>
-			<li><strong>Astro 6</strong> — for blazing-fast static site generation</li>
-			<li><strong>React</strong> — for interactive tool interfaces</li>
-			<li><strong>Tailwind CSS v4</strong> — for beautiful, responsive design</li>
-			<li><strong>pdf-lib</strong> — for PDF creation and manipulation</li>
-			<li><strong>pdfjs-dist</strong> — for PDF rendering and preview</li>
-			<li><strong>Tesseract.js</strong> — for optical character recognition</li>
-			<li><strong>Puter.js</strong> — for AI-powered features</li>
-		</ul>
+    <h2>Part of the oriz family</h2>
+    <p>
+      {SITE_CONFIG.name} is one of ten sites under the
+      <a href={FAMILY.rootOrigin}>{FAMILY.brand}</a> umbrella — a family of
+      free, fast, quiet static sites built and maintained by
+      <a href={`${FAMILY.rootOrigin}/about/`}>{FAMILY.operator.name}</a>.
+      They share a sign-in, a design system, and a single principle:
+      useful, free, no surveillance.
+    </p>
 
-		<h2>Open Source</h2>
-		<p>OrizPDF is fully open source under the MIT license. You can view the source code, report issues, or contribute on <a href="https://github.com/chirag127/orizpdf" target="_blank" rel="noopener">GitHub</a>.</p>
+    <h2>Open source</h2>
+    <p>
+      The site is open source under MIT at
+      <a href={`https://github.com/${FAMILY.operator.githubHandle}/oriz-pdf-tools`}>
+        github.com/{FAMILY.operator.githubHandle}/oriz-pdf-tools
+      </a>. Issues, PRs, and tool requests welcome.
+    </p>
 
-		<h2>The Creator</h2>
-		<p>OrizPDF is built and maintained by <a href="https://github.com/chirag127" target="_blank" rel="noopener">Chirag</a>, a developer passionate about building useful, privacy-respecting tools for the web.</p>
-
-		<h2>Contact</h2>
-		<p>Got questions, suggestions, or feedback? Reach out:</p>
-		<ul>
-			<li>Email: <a href="mailto:hello@pdf.oriz.in">hello@pdf.oriz.in</a></li>
-			<li>GitHub: <a href="https://github.com/chirag127/orizpdf" target="_blank" rel="noopener">chirag127/orizpdf</a></li>
-		</ul>
-	</article>
+    <h2>Contact</h2>
+    <p>
+      Email: <a href={`mailto:${FAMILY.operator.email}`}>{FAMILY.operator.email}</a>.
+      Or use the <a href="/contact/">contact form</a>.
+    </p>
+  </article>
 </BaseLayout>
+
+<style>
+  .page-head {
+    max-width: var(--container-prose, 720px);
+    margin-inline: auto;
+    padding-block: 3rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .eyebrow { color: var(--color-fg-muted); font-size: 0.8125rem; margin: 0 0 0.5rem; }
+  .eyebrow a { color: var(--color-fg-muted); text-decoration: none; }
+  h1 { font-family: var(--font-serif, Georgia, serif); font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 600; letter-spacing: -0.02em; margin: 0; }
+  .prose {
+    max-width: var(--container-prose, 720px);
+    margin-inline: auto;
+    padding-block: 2.5rem 4rem;
+    color: var(--color-prose);
+    line-height: 1.75;
+    font-size: 1.0625rem;
+  }
+  .prose .lede { font-size: 1.1875rem; color: var(--color-fg); margin: 0 0 2rem; }
+  .prose h2 { font-family: var(--font-serif, Georgia, serif); font-size: 1.5rem; font-weight: 600; color: var(--color-fg); margin: 2.5rem 0 1rem; }
+  .prose p { margin: 0 0 1.25rem; }
+  .prose a { color: var(--color-accent); }
+  .prose code { background: var(--color-bg-muted); padding: 0.125em 0.375em; border-radius: 0.25rem; font-size: 0.875em; }
+</style>

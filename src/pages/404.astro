@@ -1,15 +1,26 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from '~/layouts/BaseLayout.astro'
 ---
 
-<BaseLayout title="404 — Page Not Found | OrizPDF" description="Page not found. Explore our free PDF tools.">
-	<section class="min-h-[60vh] flex items-center justify-center">
-		<div class="text-center px-4">
-			<h1 class="font-display text-6xl font-bold text-gray-900 mb-4">404</h1>
-			<p class="text-xl text-gray-600 mb-8">The page you're looking for doesn't exist.</p>
-			<a href="/" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all">
-				Go Home
-			</a>
-		</div>
-	</section>
+<BaseLayout title="404 — Page not found" description="The page you're looking for doesn't exist on PDF Tools." noindex={true} hideSidebar={true}>
+  <section class="notfound">
+    <p class="emoji" aria-hidden="true">📄</p>
+    <h1>404 — Page not found</h1>
+    <p>The page you're looking for doesn't exist. Try one of these:</p>
+    <ul>
+      <li><a href="/">All PDF tools</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </section>
 </BaseLayout>
+
+<style>
+  .notfound { max-width: var(--container-prose, 720px); margin-inline: auto; padding-block: 5rem 4rem; text-align: center; }
+  .emoji { font-size: 3rem; margin: 0 0 1rem; }
+  h1 { font-family: var(--font-serif, Georgia, serif); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 600; letter-spacing: -0.02em; margin: 0 0 1rem; }
+  p { color: var(--color-fg-muted); margin: 0 0 1.5rem; }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; align-items: center; }
+  ul a { color: var(--color-accent); }
+</style>

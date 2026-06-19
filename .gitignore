@@ -1,39 +1,14 @@
-# Dependencies
-node_modules/
-
-# Build output
-dist/
-.astro/
-
-# Environment
+node_modules
+dist
+.astro
+.wrangler
 .env
 .env.local
 .env.production
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
+.env.example.lock
+*.log
 .DS_Store
 Thumbs.db
-Desktop.ini
-
-# Logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-
-# Testing
-coverage/
-playwright-report/
-test-results/
-blob-report/
-
-# Temp
-*.tmp
-*.temp
-.cache/
+.vscode
+.idea
+coverage

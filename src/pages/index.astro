@@ -1,22 +1,161 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/home/Hero.astro";
-import ToolGrid from "../components/home/ToolGrid.astro";
-import HowItWorks from "../components/home/HowItWorks.astro";
-import Features from "../components/home/Features.astro";
-import Stats from "../components/home/Stats.astro";
-import FAQ from "../components/home/FAQ.astro";
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import { tools, categories } from '~/data/tools'
+import { SITE_CONFIG } from '~/lib/siteConfig'
+
+const totalTools = tools.length
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_CONFIG.name,
+  url: SITE_CONFIG.origin,
+  description: SITE_CONFIG.description,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_CONFIG.origin}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+}
 ---
 
-<BaseLayout
-	title="OrizPDF — Free Online PDF Tools | Merge, Split, Compress & More"
-	description="30+ free PDF tools to merge, split, compress, convert, and edit PDFs directly in your browser. No uploads, no registration, 100% private."
-	canonical="/"
->
-	<Hero />
-	<ToolGrid />
-	<HowItWorks />
-	<Features />
-	<Stats />
-	<FAQ />
+<BaseLayout jsonLd={jsonLd}>
+  <section class="hero">
+    <p class="eyebrow">📄 PDF tools that never upload your file</p>
+    <h1 class="hero-h">
+      Every PDF tool you need —<br />
+      <span class="hero-accent">100% in your browser</span>.
+    </h1>
+    <p class="hero-lede">
+      {totalTools} free, fast, private PDF tools. Merge, split, compress, convert,
+      sign, redact, OCR. Files never leave your device — pdf-lib and friends do
+      the work locally.
+    </p>
+    <div class="hero-cta">
+      <a href="/tools/merge-pdf/" class="btn btn-primary">Merge PDFs →</a>
+      <a href="/tools/compress-pdf/" class="btn">Compress a PDF</a>
+    </div>
+    <ul class="stats">
+      <li><span class="stat-value">{totalTools}</span><span class="stat-label">Tools</span></li>
+      <li><span class="stat-value">100%</span><span class="stat-label">Client-side</span></li>
+      <li><span class="stat-value">0</span><span class="stat-label">Uploads</span></li>
+      <li><span class="stat-value">$0</span><span class="stat-label">Forever</span></li>
+    </ul>
+  </section>
+
+  {categories.map((cat) => (
+    <section class="cat-block" id={cat.id}>
+      <h2 class="cat-h">{cat.label}</h2>
+      <p class="cat-desc">{cat.description}</p>
+      <ul class="tool-grid">
+        {tools.filter((t) => t.category === cat.id).map((tool) => (
+          <li>
+            <a href={`/tools/${tool.slug}/`} class="tool-card">
+              <span class="tool-name">{tool.name}</span>
+              <span class="tool-desc">{tool.description}</span>
+              <span class="tool-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 </BaseLayout>
+
+<style>
+  .hero {
+    padding-block: 4rem 3rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+    color: var(--color-fg-muted);
+    font-size: 0.75rem;
+    margin: 0 0 1.5rem;
+  }
+  .hero-h {
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+  }
+  .hero-accent { color: var(--color-accent); }
+  .hero-lede {
+    color: var(--color-fg-muted);
+    font-size: 1.125rem;
+    max-width: 56ch;
+    margin: 0 auto 2rem;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-bottom: 2.5rem; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 44px;
+    padding-inline: 1.25rem;
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button, 0.375rem);
+    color: var(--color-fg);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .btn:hover { border-color: color-mix(in oklab, var(--color-accent) 50%, var(--color-border)); color: var(--color-fg); }
+  .btn-primary { background: var(--color-accent); color: var(--color-accent-fg); border-color: var(--color-accent); }
+  .btn-primary:hover { color: var(--color-accent-fg); }
+
+  .stats {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+    max-width: 480px; margin-inline: auto;
+  }
+  .stats li { text-align: center; }
+  .stat-value {
+    display: block;
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--color-fg);
+  }
+  .stat-label { display: block; font-size: 0.8125rem; color: var(--color-fg-soft); margin-top: 0.25rem; }
+
+  .cat-block { padding-block: 2.5rem; }
+  .cat-h {
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.5rem;
+  }
+  .cat-desc { color: var(--color-fg-muted); margin: 0 0 1.5rem; }
+  .tool-grid {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .tool-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 0.875rem;
+    align-items: center;
+    padding: 1rem 1.125rem;
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card, 0.5rem);
+    color: var(--color-fg);
+    text-decoration: none;
+    transition: transform 120ms, border-color 120ms;
+  }
+  .tool-card:hover { transform: translateY(-1px); border-color: color-mix(in oklab, var(--color-accent) 50%, var(--color-border)); color: var(--color-fg); }
+  .tool-name { font-weight: 600; font-size: 0.9375rem; grid-column: 1; }
+  .tool-desc { grid-column: 1; color: var(--color-fg-muted); font-size: 0.8125rem; line-height: 1.4; margin-top: 0.125rem; }
+  .tool-arrow { grid-row: span 2; align-self: center; color: var(--color-fg-soft); }
+  .tool-card:hover .tool-arrow { color: var(--color-accent); }
+</style>

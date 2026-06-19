@@ -1,78 +1,146 @@
 ---
-import "../styles/global.css";
-import Header from "../components/layout/Header.astro";
-import Footer from "../components/layout/Footer.astro";
+import '~/styles/global.css'
+import preflight from '~/lib/preflight.js?raw'
+import Header from '~/components/Header.astro'
+import Footer from '~/components/Footer.astro'
+import SiteSidebar from '~/components/SiteSidebar.astro'
+import { AdSlot } from '@chirag127/oriz-ui'
+import { SITE_CONFIG } from '~/lib/siteConfig'
 
 interface Props {
-	title: string;
-	description: string;
-	canonical?: string;
-	ogImage?: string;
-	type?: "website" | "article";
+  title?: string
+  description?: string
+  canonical?: string
+  noindex?: boolean
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
+  hideSidebar?: boolean
 }
 
 const {
-	title,
-	description,
-	canonical,
-	ogImage = "/og-image.png",
-	type = "website",
-} = Astro.props;
+  title = `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`,
+  description = SITE_CONFIG.description,
+  canonical = `${SITE_CONFIG.origin}${Astro.url.pathname}`,
+  noindex = false,
+  jsonLd,
+  hideSidebar = false,
+} = Astro.props
 
-const canonicalUrl = canonical
-	? `https://pdf.oriz.in${canonical}`
-	: Astro.url.href;
+const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT
+const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN
+const ga4Id = import.meta.env.PUBLIC_GA4_ID
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="generator" content={Astro.generator} />
+<html lang="en" data-theme="dark" data-accent="amber">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_CONFIG.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@chirag127" />
 
-		<!-- Primary Meta Tags -->
-		<title>{title}</title>
-		<meta name="title" content={title} />
-		<meta name="description" content={description} />
-		<link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
 
-		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content={type} />
-		<meta property="og:url" content={canonicalUrl} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={ogImage} />
-		<meta property="og:site_name" content="OrizPDF" />
+    <script is:inline set:html={preflight} />
 
-		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={canonicalUrl} />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content={ogImage} />
+    {
+      jsonLd && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(Array.isArray(jsonLd) ? jsonLd : [jsonLd])}
+        />
+      )
+    }
 
-		<!-- Favicon -->
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    {
+      adsenseClient && (
+        <script
+          is:inline
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+          crossorigin="anonymous"
+        />
+      )
+    }
 
-		<!-- Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link
-			rel="preconnect"
-			href="https://fonts.gstatic.com"
-			crossorigin="anonymous"
-		/>
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-			rel="stylesheet"
-		/>
-	</head>
-	<body class="min-h-screen flex flex-col bg-white text-gray-900">
-		<Header />
-		<main class="flex-1">
-			<slot />
-		</main>
-		<Footer />
-	</body>
+    {
+      beaconToken && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": "${beaconToken}"}`}
+        />
+      )
+    }
+
+    {
+      ga4Id && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`} />
+          <script
+            is:inline
+            set:html={`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${ga4Id}');`}
+          />
+        </>
+      )
+    }
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <div class="page-shell">
+      {!hideSidebar && <SiteSidebar />}
+      <main id="main" class="page-main"><slot /></main>
+    </div>
+    {
+      adsenseClient && (
+        <div class="footer-ad">
+          <AdSlot client:idle slot="footer" client={adsenseClient} format="auto" />
+        </div>
+      )
+    }
+    <Footer />
+
+    <style is:global>
+      .page-shell {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        max-width: var(--container-page, 1200px);
+        margin-inline: auto;
+        padding-inline: clamp(1rem, 4vw, 2rem);
+      }
+      @media (min-width: 1024px) {
+        .page-shell {
+          grid-template-columns: 240px 1fr;
+          gap: 2rem;
+        }
+      }
+      .page-main {
+        min-width: 0;
+      }
+      .footer-ad {
+        max-width: var(--container-page, 1200px);
+        margin: 2rem auto 0;
+        padding-inline: clamp(1rem, 4vw, 2rem);
+      }
+    </style>
+  </body>
 </html>
