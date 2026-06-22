@@ -1,0 +1,15 @@
+---
+const target = `https://auth.oriz.in/finish-sign-in${Astro.url.search}`
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="refresh" content={`0; url=${target}`} />
+<title>Finishing sign-in…</title>
+</head>
+<body>
+<p>Finishing sign-in. Redirecting to <a href={target}>auth.oriz.in</a>…</p>
+<script is:inline define:vars={{ target }}>window.location.replace(target)</script>
+</body>
+</html>
