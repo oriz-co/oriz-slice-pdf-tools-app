@@ -1,6 +1,12 @@
 ---
 import '~/styles/global.css'
-import Layout from '@chirag127/astro-chrome/Layout.astro'
+import '@chirag127/astro-shell/tokens.css'
+import Header from '~/components/Header.astro'
+import Sidebar from '@chirag127/astro-chrome/Sidebar.astro'
+import Footer from '@chirag127/astro-chrome/Footer.astro'
+import BottomBar from '@chirag127/astro-chrome/BottomBar.astro'
+import AppSidebarContent from '~/components/AppSidebarContent.astro'
+import { bottomBarActions } from '~/data/bottombar-actions'
 import { SITE_CONFIG } from '~/lib/siteConfig'
 
 interface Props {
@@ -9,11 +15,8 @@ interface Props {
   canonical?: string
   noindex?: boolean
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]
-  /** Suppress the running-foot at the bottom of <main>. Defaults false. */
   noRunningFoot?: boolean
-  /** Page number for the running foot. Defaults to "1". */
   pageNum?: string
-  /** Legacy v1 prop — accepted for back-compat, ignored in v2. */
   hideSidebar?: boolean
 }
 
@@ -29,13 +32,6 @@ const {
 
 const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN
 const ga4Id = import.meta.env.PUBLIC_GA4_ID
-const bottomBarActions = [
-  { icon: '⌂', label: 'Home', href: 'https://oriz.in/' },
-  { icon: '✎', label: 'Blog', href: 'https://blog.oriz.in/' },
-  { icon: '⚒', label: 'Tools', href: '/' },
-  { icon: 'ℹ', label: 'About', href: '/about/' },
-]
-import '@chirag127/astro-shell/tokens.css'
 ---
 
 <!doctype html>
@@ -99,7 +95,11 @@ import '@chirag127/astro-shell/tokens.css'
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
-    <Layout bottomBarActions={bottomBarActions}>
+    <Header />
+    <Sidebar>
+      <AppSidebarContent />
+    </Sidebar>
+    <main id="main">
       <slot />
       {!noRunningFoot && (
         <div class="running-foot" aria-hidden="false">
@@ -107,6 +107,8 @@ import '@chirag127/astro-shell/tokens.css'
           <span class="domain">pdf-tools.oriz.in</span>
         </div>
       )}
-    </Layout>
+    </main>
+    <Footer />
+    <BottomBar actions={bottomBarActions} />
   </body>
 </html>

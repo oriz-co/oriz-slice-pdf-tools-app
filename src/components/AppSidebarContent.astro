@@ -1,0 +1,17 @@
+---
+const groups = [
+  { label: 'PDF tools', items: [
+    { href: '/slice/', label: 'Slice' },
+    { href: '/merge/', label: 'Merge' },
+    { href: '/compress/', label: 'Compress' },
+    { href: '/convert/', label: 'Convert' },
+    { href: '/sign/', label: 'Sign' },
+  ]},
+  { label: 'Workspace', items: [
+    { href: '/recent/', label: 'Recent files' },
+    { href: '/saved/', label: 'Saved' },
+    { href: '/settings/', label: 'Settings' },
+  ]},
+]
+---
+{groups.map(g => (<section><h3>{g.label}</h3><ul>{g.items.map(i => <li><a href={i.href}>{i.label}</a></li>)}</ul></section>))}
