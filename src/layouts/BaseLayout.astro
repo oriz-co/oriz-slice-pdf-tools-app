@@ -2,6 +2,7 @@
 import '~/styles/global.css'
 import '@chirag127/astro-shell/tokens.css'
 import FamilyChrome from '@chirag127/astro-shell/components/FamilyChrome.astro'
+import FamilySidebar from '@chirag127/astro-shell/components/FamilySidebar.astro'
 import Header from '~/components/Header.astro'
 import Sidebar from '@chirag127/astro-chrome/Sidebar.astro'
 import Footer from '@chirag127/astro-chrome/Footer.astro'
@@ -102,7 +103,45 @@ const ga4Id = import.meta.env.PUBLIC_GA4_ID
       <AppSidebarContent />
     </Sidebar>
     <main id="main">
-      <slot />
+      <div class="oriz-shell">
+        <FamilySidebar slug="oriz-slice-pdf-tools-app" title="PDF Tools">
+          <a slot="tools" href="/tools/merge-pdf/">Merge PDF</a>
+          <a slot="tools" href="/tools/split-pdf/">Split PDF</a>
+          <a slot="tools" href="/tools/remove-pages/">Remove Pages</a>
+          <a slot="tools" href="/tools/extract-pages/">Extract Pages</a>
+          <a slot="tools" href="/tools/organize-pdf/">Organize PDF</a>
+          <a slot="tools" href="/tools/scan-to-pdf/">Scan to PDF</a>
+          <a slot="tools" href="/tools/compress-pdf/">Compress PDF</a>
+          <a slot="tools" href="/tools/optimize-pdf/">Optimize PDF</a>
+          <a slot="tools" href="/tools/repair-pdf/">Repair PDF</a>
+          <a slot="tools" href="/tools/ocr-pdf/">OCR PDF</a>
+          <a slot="tools" href="/tools/jpg-to-pdf/">JPG to PDF</a>
+          <a slot="tools" href="/tools/word-to-pdf/">Word to PDF</a>
+          <a slot="tools" href="/tools/powerpoint-to-pdf/">PowerPoint to PDF</a>
+          <a slot="tools" href="/tools/excel-to-pdf/">Excel to PDF</a>
+          <a slot="tools" href="/tools/html-to-pdf/">HTML to PDF</a>
+          <a slot="tools" href="/tools/pdf-to-jpg/">PDF to JPG</a>
+          <a slot="tools" href="/tools/pdf-to-word/">PDF to Word</a>
+          <a slot="tools" href="/tools/pdf-to-powerpoint/">PDF to PowerPoint</a>
+          <a slot="tools" href="/tools/pdf-to-excel/">PDF to Excel</a>
+          <a slot="tools" href="/tools/pdf-to-pdfa/">PDF to PDF/A</a>
+          <a slot="tools" href="/tools/rotate-pdf/">Rotate PDF</a>
+          <a slot="tools" href="/tools/add-page-numbers/">Add Page Numbers</a>
+          <a slot="tools" href="/tools/add-watermark/">Add Watermark</a>
+          <a slot="tools" href="/tools/crop-pdf/">Crop PDF</a>
+          <a slot="tools" href="/tools/pdf-metadata/">Edit PDF Metadata</a>
+          <a slot="tools" href="/tools/pdf-word-count/">PDF Word Count</a>
+          <a slot="tools" href="/tools/unlock-pdf/">Unlock PDF</a>
+          <a slot="tools" href="/tools/protect-pdf/">Protect PDF</a>
+          <a slot="tools" href="/tools/sign-pdf/">Sign PDF</a>
+          <a slot="tools" href="/tools/redact-pdf/">Redact PDF</a>
+          <a slot="tools" href="/tools/compare-pdf/">Compare PDF</a>
+          <a slot="tools" href="/tools/ai-summarizer/">AI Summarizer</a>
+        </FamilySidebar>
+        <main class="oriz-main">
+          <slot />
+        </main>
+      </div>
       {!noRunningFoot && (
         <div class="running-foot" aria-hidden="false">
           <span class="page-num">— {pageNum} —</span>
